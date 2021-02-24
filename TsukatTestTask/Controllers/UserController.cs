@@ -1,4 +1,6 @@
 ﻿using BuisnessLogicLayer.Interfaces;
+using BuisnessLogicLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -41,6 +43,13 @@ namespace TsukatTestTask.Controllers
         {
             await _usersService.DeleteUser(id);
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public IActionResult SignIn([FromBody] LoginModel login)
+        {
+            return Ok(_usersService.SignIn(login));
         }
     }
 }

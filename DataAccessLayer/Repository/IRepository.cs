@@ -15,5 +15,7 @@ namespace DataAccessLayer.Repository
         void Add(TEntity entity);
 
         void Update(TEntity entity);
+
+        IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

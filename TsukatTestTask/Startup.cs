@@ -1,3 +1,5 @@
+using BuisnessLogicLayer.Interfaces;
+using BuisnessLogicLayer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,11 @@ namespace TsukatTestTask
             });
 
             services.AddContext(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddUnitOfWork();
+            services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

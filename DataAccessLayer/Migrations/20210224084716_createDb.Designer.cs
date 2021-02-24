@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210223155155_groupsFix")]
-    partial class groupsFix
+    [Migration("20210224084716_createDb")]
+    partial class createDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,13 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b2c16f3a-7531-4229-94ac-c89f5833c87f"),
+                            Name = "PMP-41"
+                        });
                 });
 
             modelBuilder.Entity("TsukatTestTask.Entities.Role", b =>
@@ -55,6 +62,11 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = new Guid("b2c16f3a-7531-4229-94ac-c89f5833c87f"),
                             Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("9710de87-1ced-400a-8097-04339ef146e0"),
+                            Name = "User"
                         });
                 });
 
@@ -68,12 +80,19 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("int")
                         .HasMaxLength(125);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(60)")
+                        .HasMaxLength(60);
+
                     b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
@@ -91,9 +110,21 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = new Guid("a560c6f1-c54b-4a8b-a3e6-312215bce364"),
                             Age = 20,
-                            GroupId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Email = "stetskivostap@gmail.com",
+                            GroupId = new Guid("b2c16f3a-7531-4229-94ac-c89f5833c87f"),
                             Name = "Ostap",
+                            Password = "yI6cZwQadOA1e+/f+T+H3eCQQhQ=",
                             RoleId = new Guid("b2c16f3a-7531-4229-94ac-c89f5833c87f")
+                        },
+                        new
+                        {
+                            Id = new Guid("b2c16f3a-7531-4229-94ac-c89f5833c87f"),
+                            Age = 20,
+                            Email = "stetskiv@gmail.com",
+                            GroupId = new Guid("b2c16f3a-7531-4229-94ac-c89f5833c87f"),
+                            Name = "Ostap",
+                            Password = "yI6cZwQadOA1e+/f+T+H3eCQQhQ=",
+                            RoleId = new Guid("9710de87-1ced-400a-8097-04339ef146e0")
                         });
                 });
 
@@ -102,7 +133,7 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Entities.Group", "Group")
                         .WithMany("Users")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TsukatTestTask.Entities.Role", "Role")

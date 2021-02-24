@@ -12,7 +12,7 @@ namespace DataAccessLayer.Configuration
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).ValueGeneratedOnAdd();
             builder.Property(e => e.Name).HasMaxLength(Constant.MaxNameLength);
-            builder.HasMany(e => e.Users).WithOne(e => e.Group).HasForeignKey(e => e.GroupId);
+            builder.HasMany(e => e.Users).WithOne(e => e.Group).HasForeignKey(e => e.GroupId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
